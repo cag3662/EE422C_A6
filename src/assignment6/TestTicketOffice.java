@@ -27,7 +27,7 @@ public class TestTicketOffice {
 		client.requestTicket();
 	}
 
-	@Test
+	//@Test
 	public void testServerCachedHardInstance() {
 		try {
 			TicketServer.start(16790);
@@ -42,7 +42,7 @@ public class TestTicketOffice {
 		
 	}
 
-	@Test
+	//@Test
 	public void twoNonConcurrentServerTest() {
 		try {
 			TicketServer.start(16791);
@@ -57,7 +57,7 @@ public class TestTicketOffice {
 		c3.requestTicket();
 	}
 
-	@Test
+	//@Test
 	public void twoConcurrentServerTest() {
 		try {
 			TicketServer.start(16792);
@@ -97,31 +97,86 @@ public class TestTicketOffice {
 	@Test
 	public void Test1()
 	{
-		Queue<TicketClient> clients = new LinkedList<TicketClient>();
+		LinkedList<TicketClient> clients = new LinkedList<TicketClient>();
+		int startIndex = 0;
 
 		try {
 			TicketServer.start(16793);
 		} catch (Exception e) {
 			fail();
 		}
-		generateClients(clients);
-		while(true)
+		
+	// Generate clients
+		startIndex = generateClients(clients, startIndex) + 1;
+		
+	// Three clients at a time; Service first three
+		TicketClient c1 = clients.get(0);
+		TicketClient c2 = clients.get(1);
+		TicketClient c3 = clients.get(2);
+		clients.remove(0);
+		clients.remove(0);
+		clients.remove(0);
+
+		Thread t1 = new Thread(c1.tc);
+		Thread t2 = new Thread(c2.tc);
+		Thread t3 = new Thread(c3.tc);
+		
+		t1.start();
+		t2.start();
+		t3.start();
+		
+	// Sell the rest of the tickets	
+		while(TicketServer.Seats.size() != 0)
 		{
+		// Thread 1
+			if (clients.size() == 0) {
+				startIndex = generateClients(clients, startIndex) + 1;
+			}
 			
+			else if (t1.getState() == Thread.State.TERMINATED) {
+				TicketClient c = clients.get(0);
+				clients.remove(0);
+				t1 = new Thread(c.tc);
+				t1.start();
+			}
+			
+		// Thread 2
+			if (clients.size() == 0) {
+				startIndex = generateClients(clients, startIndex) + 1;
+			}
+			
+			else if (t2.getState() == Thread.State.TERMINATED) {
+				TicketClient c = clients.get(0);
+				clients.remove(0);
+				t2 = new Thread(c.tc);
+				t2.start();
+			}
+			
+		// Thread 3
+			if (clients.size() == 0) {
+				startIndex = generateClients(clients, startIndex) + 1;
+			}
+			
+			else if (t3.getState() == Thread.State.TERMINATED) {
+				TicketClient c = clients.get(0);
+				clients.remove(0);
+				t3 = new Thread(c.tc);
+				t3.start();
+			}
 		}
-		
-		
 	}
 	
-	public void generateClients(Queue<TicketClient> clients)
+	public int generateClients(Queue<TicketClient> clients, int startIndex)
 	{
 		int numOfClients = 0;
 		Random rand = new Random();
 		numOfClients = rand.nextInt(901) + 100;
 		for(int i = 1; i <= numOfClients; i++)
 		{
-			TicketClient c = new TicketClient(Integer.toString(i));
+			TicketClient c = new TicketClient(startIndex + Integer.toString(i));
 			clients.add(c);
 		}
+		
+		return numOfClients;
 	}
 }
