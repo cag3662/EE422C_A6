@@ -173,7 +173,7 @@ public class TestTicketOffice {
 		numOfClients = rand.nextInt(901) + 100;
 		for(int i = 1; i <= numOfClients; i++)
 		{
-			TicketClient c = new TicketClient(startIndex + Integer.toString(i));
+			TicketClient c = new TicketClient(Integer.toString(i + startIndex));
 			clients.add(c);
 		}
 		
