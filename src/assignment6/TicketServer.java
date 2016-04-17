@@ -23,6 +23,7 @@ public class TicketServer {
 		Thread t1 = new Thread(TServer.new ThreadedTicketServer());
 		t1.start();
 	}
+
 	private static void InitializeSeatMap() {
 		Seats = new ArrayList<String>();
 		String nextBestSeat = "";
@@ -124,89 +125,58 @@ public class TicketServer {
 		Seats.remove("HL,107C");
 	}
 
-	class ThreadedTicketServer implements Runnable 
-	{
-	
+	class ThreadedTicketServer implements Runnable {
+
 		String hostname = "127.0.0.1";
 		String threadname = "X";
 		String testcase;
 		String seat = "";
 		TicketClient sc;
+
 		public void run() {
-	
-			ServerSocket serverSocket;
 			try {
-				serverSocket = new ServerSocket(TicketServer.PORT);
-				Socket clientSocket = serverSocket.accept();
+				ServerSocket serverSocket = new ServerSocket(TicketServer.PORT);
+				while (true) {
+					Socket clientSocket = serverSocket.accept();
+					
+					new Thread(new RequestProcessor(clientSocket)).start();
+				}
+				// serverSocket.close();
+
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	public class RequestProcessor implements Runnable {
+		Socket clientSocket;
+
+		public RequestProcessor(Socket clientSocket) {
+			this.clientSocket = clientSocket;
+		}
+
+		public void run() {
+			try {
 				PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
 				BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-				out.println(getSeat());
-				
-					
+				if (in.readLine().equals("request")) {
+					out.println(getSeat());
+				}
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
-		
-		public synchronized String getSeat()
-		{
-			String seat = "-1";
-			if(Seats.size() != 0)
-			{
-				seat = Seats.get(0);
-				Seats.remove(0);
-			}
-			return seat;
-		}
+
 	}
-	
+
+	public synchronized String getSeat() {
+		String seat = "-1";
+		if (Seats.size() != 0) {
+			seat = Seats.get(0);
+			Seats.remove(0);
+		}
+		return seat;
+	}
 }
-//package assignment6;
-//
-//import java.io.BufferedReader; 
-//import java.io.IOException; 
-//import java.io.InputStreamReader; 
-//import java.io.PrintWriter; 
-//import java.net.ServerSocket; 
-//import java.net.Socket;
-//
-//public class TicketServer 
-//{ 
-//	static int PORT = 2222;
-//
-//	// EE422C: no matter how many concurrent requests you get, 
-//	// do not have more than three servers running concurrently 
-//	final static int MAXPARALLELTHREADS = 3;
-//
-//	public static void start(int portNumber) throws IOException 
-//	{
-//		PORT = portNumber; 
-//		Runnable serverThread = new ThreadedTicketServer(); 
-//		Thread t = new Thread(serverThread); 
-//		t.start();
-//	}
-//} 
-//
-//class ThreadedTicketServer implements Runnable 
-//{
-//	String hostname = "127.0.0.1"; 
-//	String threadname = "X"; 
-//	String testcase; 
-//	TicketClient sc;
-//
-//	public void run() {
-//		// TODO 422C 
-//		ServerSocket serverSocket; 
-//		try {
-//			serverSocket = new ServerSocket(TicketServer.PORT); 
-//			Socket clientSocket = serverSocket.accept(); 
-//			PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
-//			BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream())); 
-//		} 
-//	catch (IOException e) { 
-//		// TODO Auto-generated catch block 
-//		e.printStackTrace();
-//	}
-//}
-//}
