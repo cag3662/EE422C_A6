@@ -11,7 +11,7 @@ import java.util.Random;
 import org.junit.Test;
 
 public class TestTicketOffice {
-
+	//HAHAHAHA
 	public static int score = 0;
 
 	//@Test
