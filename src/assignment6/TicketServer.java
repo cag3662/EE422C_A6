@@ -12,7 +12,7 @@ import java.util.Iterator;
 public class TicketServer {
 	static int PORT = 2222;
 	public static ArrayList<String> Seats;
-	// EE422C: no matter how many concurrent requests you get,
+	// EE422C: no matter how many concurrent requests you get
 	// do not have more than three servers running concurrently
 	final static int MAXPARALLELTHREADS = 3;
 
