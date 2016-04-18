@@ -30,9 +30,9 @@ public class TicketClient {
 		tc.run();
 	}
 
-	void sleep() {
+	void sleep(int seconds) {
 		try {
-			Thread.sleep(100);
+			Thread.sleep(1000 * seconds);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
@@ -74,7 +74,7 @@ class ThreadedTicketClient implements Runnable {
 			}
 			else
 			{
-				printTicket(Seat, threadname);
+				printTicket(Seat, sc.threadName);
 			}
 			echoSocket.close();
 		} catch (Exception e) {
@@ -89,7 +89,7 @@ class ThreadedTicketClient implements Runnable {
 
 	private void printTicket(String Seat, String threadname)
 	{
-		System.out.println("Box Office " + hostname + ": Reserved " + Seat);
+		System.out.println("Box Office " + threadname + ": Reserved " + Seat);
 	}
 }
 

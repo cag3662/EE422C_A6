@@ -113,6 +113,9 @@ public class TestTicketOffice {
 		TicketClient c1 = clients.get(0);
 		TicketClient c2 = clients.get(1);
 		TicketClient c3 = clients.get(2);
+		c1.threadName = "A";
+		c2.threadName = "B";
+		c3.threadName = "C";
 		clients.remove(0);
 		clients.remove(0);
 		clients.remove(0);
@@ -133,9 +136,10 @@ public class TestTicketOffice {
 				startIndex = generateClients(clients, startIndex) + 1;
 			}
 			
-			else if (t1.getState() == Thread.State.TERMINATED) {
+			if (t1.getState() == Thread.State.TERMINATED && TicketServer.Seats.size() != 0) {
 				TicketClient c = clients.get(0);
 				clients.remove(0);
+				c.threadName = "A";
 				t1 = new Thread(c.tc);
 				t1.start();
 			}
@@ -145,9 +149,10 @@ public class TestTicketOffice {
 				startIndex = generateClients(clients, startIndex) + 1;
 			}
 			
-			else if (t2.getState() == Thread.State.TERMINATED) {
+			if (t2.getState() == Thread.State.TERMINATED && TicketServer.Seats.size() != 0) {
 				TicketClient c = clients.get(0);
 				clients.remove(0);
+				c.threadName = "B";
 				t2 = new Thread(c.tc);
 				t2.start();
 			}
@@ -157,9 +162,10 @@ public class TestTicketOffice {
 				startIndex = generateClients(clients, startIndex) + 1;
 			}
 			
-			else if (t3.getState() == Thread.State.TERMINATED) {
+			if (t3.getState() == Thread.State.TERMINATED && TicketServer.Seats.size() != 0) {
 				TicketClient c = clients.get(0);
 				clients.remove(0);
+				c.threadName = "C";
 				t3 = new Thread(c.tc);
 				t3.start();
 			}
