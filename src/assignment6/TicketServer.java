@@ -94,6 +94,8 @@ public class TicketServer {
 			}
 		}
 
+		
+
 		// row AA
 		nextBestSeat = "HR," + 127 + "AA";
 		Seats.add(nextBestSeat);
@@ -123,6 +125,14 @@ public class TicketServer {
 			}
 		}
 		Seats.remove("HL,107C");
+		Iterator<String> it = Seats.iterator();
+		while(it.hasNext())
+		{
+			if(it.next().contains("I"))
+			{
+				it.remove();
+			}
+		}
 	}
 
 	class ThreadedTicketServer implements Runnable {
