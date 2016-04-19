@@ -128,7 +128,8 @@ public class TicketServer {
 		Iterator<String> it = Seats.iterator();
 		while(it.hasNext())
 		{
-			if(it.next().contains("I"))
+			String temp = it.next();
+			if(temp.contains("I") || temp.contains("O"))
 			{
 				it.remove();
 			}
