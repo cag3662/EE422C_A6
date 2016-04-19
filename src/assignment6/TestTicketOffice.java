@@ -170,6 +170,13 @@ public class TestTicketOffice {
 				t3.start();
 			}
 		}
+		try {
+			t1.join();
+			t2.join();
+			t3.join();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public int generateClients(Queue<TicketClient> clients, int startIndex)
