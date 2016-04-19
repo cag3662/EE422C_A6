@@ -26,3 +26,4 @@ Caesar Gonzales: main test Case. Multithreading.
 
 Other Things:
 1. Our program is pushed to the branch called "NewBranch," instead of "master."
+2. When the last ticket is sold, and other box offices are processing requests, they will show a message Saying "Sorry, all tickets are sold." to their current clients, and then the program terminates. The program does not show this message to the remaining clients in the line.
