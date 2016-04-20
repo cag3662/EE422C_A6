@@ -11,7 +11,7 @@ import java.util.Random;
 import org.junit.Test;
 
 public class TestTicketOffice {
-	//HAHAHAHA
+
 	public static int score = 0;
 
 	//@Test
@@ -94,7 +94,7 @@ public class TestTicketOffice {
 		}
 	}
 	
-	@Test
+	//@Test
 	public void Test1()
 	{
 		LinkedList<TicketClient> clients = new LinkedList<TicketClient>();
@@ -136,7 +136,7 @@ public class TestTicketOffice {
 				startIndex = generateClients(clients, startIndex) + 1;
 			}
 			
-			if (t1.getState() == Thread.State.TERMINATED && TicketServer.Seats.size() != 0) {
+			if (t1.getState() == Thread.State.TERMINATED) {
 				TicketClient c = clients.get(0);
 				clients.remove(0);
 				c.threadName = "A";
@@ -149,7 +149,7 @@ public class TestTicketOffice {
 				startIndex = generateClients(clients, startIndex) + 1;
 			}
 			
-			if (t2.getState() == Thread.State.TERMINATED && TicketServer.Seats.size() != 0) {
+			if (t2.getState() == Thread.State.TERMINATED) {
 				TicketClient c = clients.get(0);
 				clients.remove(0);
 				c.threadName = "B";
@@ -162,7 +162,7 @@ public class TestTicketOffice {
 				startIndex = generateClients(clients, startIndex) + 1;
 			}
 			
-			if (t3.getState() == Thread.State.TERMINATED && TicketServer.Seats.size() != 0) {
+			if (t3.getState() == Thread.State.TERMINATED) {
 				TicketClient c = clients.get(0);
 				clients.remove(0);
 				c.threadName = "C";
@@ -177,6 +177,31 @@ public class TestTicketOffice {
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	@Test
+	public void Test2()
+	{
+		int startIndex = 0;
+		try {
+			TicketServer.start(2223);
+		} catch (Exception e) {
+			e.printStackTrace();
+			fail();
+		}
+		Queue<TicketClient> clients = new LinkedList<TicketClient>();
+
+		while(true)
+		{
+			if(clients.size() == 0) startIndex = generateClients(clients, startIndex) + 1;
+			TicketClient c = clients.poll();
+			Thread t = new Thread(c.tc);
+			while()
+			
+			
+			t.start();//the currently first client in the line requests a ticket
+		}
+		
 	}
 	
 	public int generateClients(Queue<TicketClient> clients, int startIndex)
