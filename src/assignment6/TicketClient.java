@@ -68,11 +68,7 @@ class ThreadedTicketClient implements Runnable {
 			//read result
 			Seat = in.readLine();
 			
-			if(Seat.equals("-1") == true)
-			{
-				printFail();
-			}
-			else
+			if(Seat.equals("-1") == false)
 			{
 				printTicket(Seat, sc.threadName);
 			}
@@ -82,14 +78,10 @@ class ThreadedTicketClient implements Runnable {
 		}
 	}
 
-	private void printFail() 
-	{
-		System.out.println("Sorry, all tickets are sold");
-	}
-
-	private void printTicket(String Seat, String threadname)
+	private synchronized void printTicket(String Seat, String threadname)
 	{
 		System.out.println("Box Office " + threadname + ": Reserved " + Seat);
+		if(TicketServer.Seats.size() == 0) System.out.println("All tickets are sold!");
 	}
 }
 

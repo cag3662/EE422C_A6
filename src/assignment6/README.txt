@@ -1,5 +1,4 @@
 SEATS:
-
 1. Our Seat Map is exactly like the one found on the webpage.
 2. In general, the seats in the middle are the most desirable, then goes less desiralbe as they spread to the two sides of the theatre. In other words, 115 = 114 > 116 = 113 > 117 = 112 > 118 = 111 > ......
 3. Also, the seats in the front in more desirable, so A > B > C > D in general.
@@ -13,17 +12,17 @@ Multithreading:
 
 Queue of Customers:
 1. Initially there is 100 - 1000 customers waiting in a line. (a linked list)
-2. Since the pdf says that the line is never empty, we decided that, when there is no more waiting customers, 100 - 1000 customers are added to the line.
+2. Since the pdf says that the line is never empty, we decided that, when there is no more waiting customers, 100 - 1000 customers are added to the line. This way, there is no delay between requests.
 
 
-Task allocation:
-
+Task assignments:
 We together designed the algorithm.
-
 Tianyun Duan: map initialization, getSeat() method. Correct communication between the clients and the server. Synchronization.
-
 Caesar Gonzales: main test Case. Multithreading.
 
 Other Things:
 1. Our program is pushed to the branch called "NewBranch," instead of "master."
 2. When the last ticket is sold, and other box offices are processing requests, they will show a message Saying "Sorry, all tickets are sold." to their current clients, and then the program terminates. The program does not show this message to the remaining clients in the line.
+3. The original test cases are useful and they helped us build our program from the bottom, and we do not think that we need to modify them.
+4. The Test1 test covers all the requirements the assignment asks for, so we think that is sufficient. 
+5. Since the getSeat() method is synchronized, it is impossible for two threads to try to get the same seat at the same time, so "xxx is already allocated" will never be printed.

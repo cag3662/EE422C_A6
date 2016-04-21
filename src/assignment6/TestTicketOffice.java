@@ -14,7 +14,7 @@ public class TestTicketOffice {
 
 	public static int score = 0;
 
-	//@Test
+	@Test
 	public void basicServerTest() {
 		try {
 			TicketServer.start(16789);
@@ -27,7 +27,7 @@ public class TestTicketOffice {
 		client.requestTicket();
 	}
 
-	//@Test
+	@Test
 	public void testServerCachedHardInstance() {
 		try {
 			TicketServer.start(16790);
@@ -42,7 +42,7 @@ public class TestTicketOffice {
 		
 	}
 
-	//@Test
+	@Test
 	public void twoNonConcurrentServerTest() {
 		try {
 			TicketServer.start(16791);
@@ -57,7 +57,7 @@ public class TestTicketOffice {
 		c3.requestTicket();
 	}
 
-	//@Test
+	@Test
 	public void twoConcurrentServerTest() {
 		try {
 			TicketServer.start(16792);
@@ -94,7 +94,7 @@ public class TestTicketOffice {
 		}
 	}
 	
-	//@Test
+	@Test
 	public void Test1()
 	{
 		LinkedList<TicketClient> clients = new LinkedList<TicketClient>();
@@ -139,7 +139,7 @@ public class TestTicketOffice {
 			if (t1.getState() == Thread.State.TERMINATED) {
 				TicketClient c = clients.get(0);
 				clients.remove(0);
-				c.threadName = "A";
+				c.threadName = "A";//t1 is box office A
 				t1 = new Thread(c.tc);
 				t1.start();
 			}
@@ -149,10 +149,10 @@ public class TestTicketOffice {
 				startIndex = generateClients(clients, startIndex) + 1;
 			}
 			
-			if (t2.getState() == Thread.State.TERMINATED) {
+			if (t2.getState() == Thread.State.TERMINATED ) {
 				TicketClient c = clients.get(0);
 				clients.remove(0);
-				c.threadName = "B";
+				c.threadName = "B";//t2 is box office B
 				t2 = new Thread(c.tc);
 				t2.start();
 			}
@@ -165,7 +165,7 @@ public class TestTicketOffice {
 			if (t3.getState() == Thread.State.TERMINATED) {
 				TicketClient c = clients.get(0);
 				clients.remove(0);
-				c.threadName = "C";
+				c.threadName = "C";//t3 is box office C
 				t3 = new Thread(c.tc);
 				t3.start();
 			}
@@ -177,31 +177,6 @@ public class TestTicketOffice {
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-	}
-	
-	@Test
-	public void Test2()
-	{
-		int startIndex = 0;
-		try {
-			TicketServer.start(2223);
-		} catch (Exception e) {
-			e.printStackTrace();
-			fail();
-		}
-		Queue<TicketClient> clients = new LinkedList<TicketClient>();
-
-		while(true)
-		{
-			if(clients.size() == 0) startIndex = generateClients(clients, startIndex) + 1;
-			TicketClient c = clients.poll();
-			Thread t = new Thread(c.tc);
-			while()
-			
-			
-			t.start();//the currently first client in the line requests a ticket
-		}
-		
 	}
 	
 	public int generateClients(Queue<TicketClient> clients, int startIndex)
